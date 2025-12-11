@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        NODE_VERSION ="node"    // Match the tool name in Jenkins
+        NODE_VERSION = "node"    // Match the tool name in Jenkins
     }
 
     tools {
