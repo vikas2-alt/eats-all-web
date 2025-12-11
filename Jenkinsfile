@@ -1,12 +1,9 @@
 pipeline {
     agent any
 
-    environment {
-        NODE_VERSION = "node"    // Match the tool name in Jenkins
-    }
 
     tools {
-        nodejs NODE_VERSION
+        nodejs "node20"
     }
 
     stages {
