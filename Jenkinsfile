@@ -42,8 +42,8 @@ pipeline {
             when {
                 branch 'main'
             }
-            steps {
-                sshagent (credentials: ['your-ssh-credentials-id']) {
+            steps {         
+                sshagent (credentials: ['deploy-ec-2']) {
                     sh '''
                         scp -r build/* ubuntu@65.2.184.34:/var/www/html/
                                         ssh ubuntu@65.2.184.34 "sudo systemctl restart myapp"
