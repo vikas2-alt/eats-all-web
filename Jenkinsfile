@@ -1,7 +1,6 @@
 pipeline {
     agent any
 
-
     tools {
         nodejs "node20"
     }
@@ -22,7 +21,7 @@ pipeline {
 
         stage('Run Tests') {
             steps {
-                sh 'npm test || true'     // remove "|| true" if test failures should stop the pipeline
+                sh 'npm test || true'
             }
         }
 
@@ -42,12 +41,16 @@ pipeline {
             when {
                 branch 'main'
             }
-            steps {         
-                sshagent (credentials: ['deploy-ec-2']) {
+            steps {
+                sshagent (credentials: ['deploy-ec2']) {
                     sh '''
-                        scp -r build/* ubuntu@65.2.184.34:/var/www/html/
-                                        ssh ubuntu@65.2.184.34 "sudo systemctl restart myapp"
+                        # Copy build files to server
+                        scp -o StrictHostKeyChecking=no -r build/* ubuntu@65.2.184.34:/var/www/html/
 
+                        # Restart service on server
+                        ssh -o StrictHostKeyChecking=no ubuntu@65.2.184.34 "sudo systemctl restart myapp"
+                    '''
+                }
             }
         }
     }
