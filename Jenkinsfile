@@ -34,7 +34,7 @@ pipeline {
 
         stage('Archive Artifacts') {
             steps {
-                archiveArtifacts artifacts: 'dist/**', fingerprint: true
+                archiveArtifacts artifacts: 'build/**', fingerprint: true
             }
         }
 
@@ -43,9 +43,11 @@ pipeline {
                 branch 'main'
             }
             steps {
-                echo "Deploying application..."
-                // Example deploy command:
-                // sh 'scp -r dist/* ubuntu@your-server:/var/www/myapp'
+                sshagent (credentials: ['your-ssh-credentials-id']) {
+                    sh '''
+                        scp -r build/* ubuntu@65.2.184.34:/var/www/html/
+                                        ssh ubuntu@65.2.184.34 "sudo systemctl restart myapp"
+
             }
         }
     }
